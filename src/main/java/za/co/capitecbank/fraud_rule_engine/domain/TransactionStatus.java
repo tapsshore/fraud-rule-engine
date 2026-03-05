@@ -1,4 +1,4 @@
-package za.co.capitecbank.fraudruleengine.domain;
+package za.co.capitecbank.fraud_rule_engine.domain;
 
 public enum TransactionStatus {
     PENDING,
