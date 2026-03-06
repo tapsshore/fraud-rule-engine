@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import za.co.capitecbank.fraud_rule_engine.domain.AlertStatus;
+import za.co.capitecbank.fraud_rule_engine.domain.FraudAlert;
 import za.co.capitecbank.fraud_rule_engine.dto.FraudAlertResponse;
+import za.co.capitecbank.fraud_rule_engine.exception.ResourceNotFoundException;
 import za.co.capitecbank.fraud_rule_engine.repository.FraudAlertRepository;
 
 
@@ -32,10 +34,9 @@ public class FraudAlertController {
 
     @GetMapping("/{id}")
     public ResponseEntity<FraudAlertResponse> getAlertById(@PathVariable Long id) {
-        return fraudAlertRepository.findById(id)
-                .map(FraudAlertResponse::fromEntity)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        FraudAlert alert = fraudAlertRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("FraudAlert", "id", id));
+        return ResponseEntity.ok(FraudAlertResponse.fromEntity(alert));
     }
 
     @GetMapping("/status/{status}")

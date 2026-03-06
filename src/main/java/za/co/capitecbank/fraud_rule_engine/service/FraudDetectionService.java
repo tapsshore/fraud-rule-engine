@@ -7,6 +7,7 @@ import org.springframework.transaction.annotation.Transactional;
 import za.co.capitecbank.fraud_rule_engine.domain.FraudAlert;
 import za.co.capitecbank.fraud_rule_engine.domain.Transaction;
 import za.co.capitecbank.fraud_rule_engine.domain.TransactionStatus;
+import za.co.capitecbank.fraud_rule_engine.exception.DuplicateResourceException;
 import za.co.capitecbank.fraud_rule_engine.repository.FraudAlertRepository;
 import za.co.capitecbank.fraud_rule_engine.repository.TransactionRepository;
 import za.co.capitecbank.fraud_rule_engine.rule.FraudRule;
@@ -39,6 +40,11 @@ public class FraudDetectionService {
     @Transactional
     public FraudDetectionResult processTransaction(Transaction transaction) {
         log.info("Processing transaction: {}", transaction.getTransactionId());
+
+        // Check for duplicate transaction
+        if (transactionRepository.findByTransactionId(transaction.getTransactionId()).isPresent()) {
+            throw new DuplicateResourceException("Transaction", "transactionId", transaction.getTransactionId());
+        }
 
         List<FraudAlert> alerts = evaluateRules(transaction);
 

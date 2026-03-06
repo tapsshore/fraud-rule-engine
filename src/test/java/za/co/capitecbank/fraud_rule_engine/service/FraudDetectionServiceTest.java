@@ -9,6 +9,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import za.co.capitecbank.fraud_rule_engine.domain.FraudAlert;
 import za.co.capitecbank.fraud_rule_engine.domain.Transaction;
 import za.co.capitecbank.fraud_rule_engine.domain.TransactionStatus;
+import za.co.capitecbank.fraud_rule_engine.exception.DuplicateResourceException;
 import za.co.capitecbank.fraud_rule_engine.repository.FraudAlertRepository;
 import za.co.capitecbank.fraud_rule_engine.repository.TransactionRepository;
 import za.co.capitecbank.fraud_rule_engine.rule.FraudRule;
@@ -21,6 +22,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -61,6 +63,9 @@ class FraudDetectionServiceTest {
                 .transactionType("TRANSFER")
                 .timestamp(LocalDateTime.now())
                 .build();
+
+        // Default: no duplicate exists
+        when(transactionRepository.findByTransactionId(any())).thenReturn(Optional.empty());
     }
 
     @Test
@@ -166,5 +171,19 @@ class FraudDetectionServiceTest {
         verify(transactionRepository).save(argThat(tx ->
             tx.getStatus() == TransactionStatus.FLAGGED
         ));
+    }
+
+    @Test
+    @DisplayName("Should throw DuplicateResourceException when transaction already exists")
+    void shouldThrowExceptionWhenTransactionAlreadyExists() {
+        // Given
+        when(transactionRepository.findByTransactionId("TXN-001")).thenReturn(Optional.of(testTransaction));
+
+        // When & Then
+        assertThatThrownBy(() -> fraudDetectionService.processTransaction(testTransaction))
+                .isInstanceOf(DuplicateResourceException.class)
+                .hasMessageContaining("TXN-001");
+
+        verify(transactionRepository, never()).save(any(Transaction.class));
     }
 }

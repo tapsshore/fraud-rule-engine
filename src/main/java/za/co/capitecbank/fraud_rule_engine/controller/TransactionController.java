@@ -9,6 +9,7 @@ import za.co.capitecbank.fraud_rule_engine.domain.Transaction;
 import za.co.capitecbank.fraud_rule_engine.dto.FraudDetectionResponse;
 import za.co.capitecbank.fraud_rule_engine.dto.TransactionRequest;
 import za.co.capitecbank.fraud_rule_engine.dto.TransactionResponse;
+import za.co.capitecbank.fraud_rule_engine.exception.ResourceNotFoundException;
 import za.co.capitecbank.fraud_rule_engine.repository.TransactionRepository;
 import za.co.capitecbank.fraud_rule_engine.service.FraudDetectionResult;
 import za.co.capitecbank.fraud_rule_engine.service.FraudDetectionService;
@@ -40,10 +41,9 @@ public class TransactionController {
 
     @GetMapping("/{transactionId}")
     public ResponseEntity<TransactionResponse> getTransaction(@PathVariable String transactionId) {
-        return transactionRepository.findByTransactionId(transactionId)
-                .map(TransactionResponse::fromEntity)
-                .map(ResponseEntity::ok)
-                .orElse(ResponseEntity.notFound().build());
+        Transaction transaction = transactionRepository.findByTransactionId(transactionId)
+                .orElseThrow(() -> new ResourceNotFoundException("Transaction", "transactionId", transactionId));
+        return ResponseEntity.ok(TransactionResponse.fromEntity(transaction));
     }
 
     @GetMapping
