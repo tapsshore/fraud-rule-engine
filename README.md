@@ -239,13 +239,16 @@ mvn test jacoco:report
 ### Test Categories
 | Category | Description | Count |
 |----------|-------------|-------|
-| Unit Tests | Domain entities, rules | 13 |
+| Domain Tests | Entity validation and behavior | 6 |
+| DTO Tests | Response mapping and conversion | 10 |
+| Rule Tests | Fraud rule evaluation logic | 11 |
 | Service Tests | FraudDetectionService with mocks | 6 |
 | Repository Tests | JPA repositories with H2 | 10 |
 | Controller Tests | WebMvcTest for REST endpoints | 10 |
-| Integration Tests | Full context load | 1 |
+| Exception Tests | Global exception handling | 9 |
+| Integration Tests | Full application context | 8 |
 
-**Total: 40 tests**
+**Total: 70 tests**
 
 ## Project Structure
 
