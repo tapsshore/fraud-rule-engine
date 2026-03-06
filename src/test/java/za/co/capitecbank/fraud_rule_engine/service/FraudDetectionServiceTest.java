@@ -84,9 +84,9 @@ class FraudDetectionServiceTest {
         FraudDetectionResult result = fraudDetectionService.processTransaction(testTransaction);
 
         // Then
-        assertThat(result.getTransaction()).isNotNull();
-        assertThat(result.getAlerts()).hasSize(1);
-        assertThat(result.isFlagged()).isTrue();
+        assertThat(result.transaction()).isNotNull();
+        assertThat(result.alerts()).hasSize(1);
+        assertThat(result.flagged()).isTrue();
         verify(fraudAlertRepository, times(1)).save(any(FraudAlert.class));
     }
 
@@ -104,8 +104,8 @@ class FraudDetectionServiceTest {
         FraudDetectionResult result = fraudDetectionService.processTransaction(testTransaction);
 
         // Then
-        assertThat(result.isFlagged()).isFalse();
-        assertThat(result.getAlerts()).isEmpty();
+        assertThat(result.flagged()).isFalse();
+        assertThat(result.alerts()).isEmpty();
         verify(fraudAlertRepository, never()).save(any(FraudAlert.class));
     }
 
@@ -124,7 +124,7 @@ class FraudDetectionServiceTest {
         FraudDetectionResult result = fraudDetectionService.processTransaction(testTransaction);
 
         // Then
-        assertThat(result.getAlerts()).hasSize(1);
+        assertThat(result.alerts()).hasSize(1);
         verify(mockRule1, never()).evaluate(any(Transaction.class));
         verify(mockRule2, times(1)).evaluate(any(Transaction.class));
     }
@@ -146,8 +146,8 @@ class FraudDetectionServiceTest {
         FraudDetectionResult result = fraudDetectionService.processTransaction(testTransaction);
 
         // Then
-        assertThat(result.getAlerts()).hasSize(2);
-        assertThat(result.isFlagged()).isTrue();
+        assertThat(result.alerts()).hasSize(2);
+        assertThat(result.flagged()).isTrue();
         verify(fraudAlertRepository, times(2)).save(any(FraudAlert.class));
     }
 
@@ -167,7 +167,7 @@ class FraudDetectionServiceTest {
         FraudDetectionResult result = fraudDetectionService.processTransaction(testTransaction);
 
         // Then
-        assertThat(result.isFlagged()).isTrue();
+        assertThat(result.flagged()).isTrue();
         verify(transactionRepository).save(argThat(tx ->
             tx.getStatus() == TransactionStatus.FLAGGED
         ));

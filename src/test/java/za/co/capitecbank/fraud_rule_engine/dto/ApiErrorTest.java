@@ -17,12 +17,12 @@ class ApiErrorTest {
         ApiError error = ApiError.of(404, "Not Found", "Resource not found", "/api/v1/transactions/123");
 
         // Then
-        assertThat(error.getStatus()).isEqualTo(404);
-        assertThat(error.getError()).isEqualTo("Not Found");
-        assertThat(error.getMessage()).isEqualTo("Resource not found");
-        assertThat(error.getPath()).isEqualTo("/api/v1/transactions/123");
-        assertThat(error.getTimestamp()).isNotNull();
-        assertThat(error.getFieldErrors()).isNull();
+        assertThat(error.status()).isEqualTo(404);
+        assertThat(error.error()).isEqualTo("Not Found");
+        assertThat(error.message()).isEqualTo("Resource not found");
+        assertThat(error.path()).isEqualTo("/api/v1/transactions/123");
+        assertThat(error.timestamp()).isNotNull();
+        assertThat(error.fieldErrors()).isNull();
     }
 
     @Test
@@ -30,16 +30,8 @@ class ApiErrorTest {
     void shouldCreateApiErrorWithFieldErrors() {
         // Given
         List<ApiError.FieldError> fieldErrors = List.of(
-                ApiError.FieldError.builder()
-                        .field("amount")
-                        .message("Amount must be positive")
-                        .rejectedValue(-100)
-                        .build(),
-                ApiError.FieldError.builder()
-                        .field("currency")
-                        .message("Currency is required")
-                        .rejectedValue(null)
-                        .build()
+                new ApiError.FieldError("amount", "Amount must be positive", -100),
+                new ApiError.FieldError("currency", "Currency is required", null)
         );
 
         // When
@@ -52,26 +44,25 @@ class ApiErrorTest {
         );
 
         // Then
-        assertThat(error.getStatus()).isEqualTo(400);
-        assertThat(error.getFieldErrors()).hasSize(2);
-        assertThat(error.getFieldErrors().get(0).getField()).isEqualTo("amount");
-        assertThat(error.getFieldErrors().get(0).getMessage()).isEqualTo("Amount must be positive");
-        assertThat(error.getFieldErrors().get(1).getField()).isEqualTo("currency");
+        assertThat(error.status()).isEqualTo(400);
+        assertThat(error.fieldErrors()).hasSize(2);
+        assertThat(error.fieldErrors().get(0).field()).isEqualTo("amount");
+        assertThat(error.fieldErrors().get(0).message()).isEqualTo("Amount must be positive");
+        assertThat(error.fieldErrors().get(1).field()).isEqualTo("currency");
     }
 
     @Test
     @DisplayName("Should create FieldError with all fields")
     void shouldCreateFieldError() {
         // When
-        ApiError.FieldError fieldError = ApiError.FieldError.builder()
-                .field("transactionId")
-                .message("Transaction ID is required")
-                .rejectedValue("")
-                .build();
+        ApiError.FieldError fieldError = new ApiError.FieldError(
+                "transactionId",
+                "Transaction ID is required",
+                "");
 
         // Then
-        assertThat(fieldError.getField()).isEqualTo("transactionId");
-        assertThat(fieldError.getMessage()).isEqualTo("Transaction ID is required");
-        assertThat(fieldError.getRejectedValue()).isEqualTo("");
+        assertThat(fieldError.field()).isEqualTo("transactionId");
+        assertThat(fieldError.message()).isEqualTo("Transaction ID is required");
+        assertThat(fieldError.rejectedValue()).isEqualTo("");
     }
 }

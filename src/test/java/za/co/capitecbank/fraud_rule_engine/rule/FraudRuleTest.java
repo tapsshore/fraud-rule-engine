@@ -38,8 +38,8 @@ class FraudRuleTest {
 
             // Then
             assertThat(result).isPresent();
-            assertThat(result.get().getRuleName()).isEqualTo("HIGH_AMOUNT_RULE");
-            assertThat(result.get().getRiskScore()).isGreaterThanOrEqualTo(70);
+            assertThat(result.get().ruleName()).isEqualTo("HIGH_AMOUNT_RULE");
+            assertThat(result.get().riskScore()).isGreaterThanOrEqualTo(70);
         }
 
         @Test
@@ -80,7 +80,7 @@ class FraudRuleTest {
 
             // Then
             assertThat(result).isPresent();
-            assertThat(result.get().getRiskScore()).isGreaterThanOrEqualTo(90);
+            assertThat(result.get().riskScore()).isGreaterThanOrEqualTo(90);
         }
     }
 
@@ -109,7 +109,7 @@ class FraudRuleTest {
 
             // Then
             assertThat(result).isPresent();
-            assertThat(result.get().getRuleName()).isEqualTo("SUSPICIOUS_MERCHANT_RULE");
+            assertThat(result.get().ruleName()).isEqualTo("SUSPICIOUS_MERCHANT_RULE");
         }
 
         @Test
@@ -158,7 +158,7 @@ class FraudRuleTest {
 
             // Then
             assertThat(result).isPresent();
-            assertThat(result.get().getRuleName()).isEqualTo("CROSS_BORDER_RULE");
+            assertThat(result.get().ruleName()).isEqualTo("CROSS_BORDER_RULE");
         }
 
         @Test

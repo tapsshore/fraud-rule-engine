@@ -79,7 +79,7 @@ public class FraudDetectionService {
                 FraudAlert alert = createAlert(transaction, result);
                 alerts.add(alert);
                 log.debug("Rule {} triggered for transaction {}",
-                        result.getRuleName(), transaction.getTransactionId());
+                        result.ruleName(), transaction.getTransactionId());
             });
         }
 
@@ -89,9 +89,9 @@ public class FraudDetectionService {
     private FraudAlert createAlert(Transaction transaction, RuleResult result) {
         return FraudAlert.builder()
                 .transaction(transaction)
-                .ruleName(result.getRuleName())
-                .ruleDescription(result.getDescription())
-                .riskScore(result.getRiskScore())
+                .ruleName(result.ruleName())
+                .ruleDescription(result.description())
+                .riskScore(result.riskScore())
                 .build();
     }
 

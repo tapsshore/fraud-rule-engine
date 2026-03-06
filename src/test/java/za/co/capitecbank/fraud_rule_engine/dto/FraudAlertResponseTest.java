@@ -44,14 +44,14 @@ class FraudAlertResponseTest {
         FraudAlertResponse response = FraudAlertResponse.fromEntity(alert);
 
         // Then
-        assertThat(response.getId()).isEqualTo(1L);
-        assertThat(response.getTransactionId()).isEqualTo("TXN-001");
-        assertThat(response.getRuleName()).isEqualTo("HIGH_AMOUNT_RULE");
-        assertThat(response.getRuleDescription()).isEqualTo("Transaction exceeds threshold");
-        assertThat(response.getRiskScore()).isEqualTo(85);
-        assertThat(response.getAlertStatus()).isEqualTo(AlertStatus.PENDING);
-        assertThat(response.getReviewedBy()).isEqualTo("analyst@bank.com");
-        assertThat(response.getReviewNotes()).isEqualTo("Under review");
+        assertThat(response.id()).isEqualTo(1L);
+        assertThat(response.transactionId()).isEqualTo("TXN-001");
+        assertThat(response.ruleName()).isEqualTo("HIGH_AMOUNT_RULE");
+        assertThat(response.ruleDescription()).isEqualTo("Transaction exceeds threshold");
+        assertThat(response.riskScore()).isEqualTo(85);
+        assertThat(response.alertStatus()).isEqualTo(AlertStatus.PENDING);
+        assertThat(response.reviewedBy()).isEqualTo("analyst@bank.com");
+        assertThat(response.reviewNotes()).isEqualTo("Under review");
     }
 
     @Test
@@ -79,8 +79,8 @@ class FraudAlertResponseTest {
         FraudAlertResponse response = FraudAlertResponse.fromEntity(alert);
 
         // Then
-        assertThat(response.getRuleDescription()).isNull();
-        assertThat(response.getReviewedBy()).isNull();
-        assertThat(response.getReviewNotes()).isNull();
+        assertThat(response.ruleDescription()).isNull();
+        assertThat(response.reviewedBy()).isNull();
+        assertThat(response.reviewNotes()).isNull();
     }
 }

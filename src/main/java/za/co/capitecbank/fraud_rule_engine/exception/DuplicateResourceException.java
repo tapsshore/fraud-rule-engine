@@ -2,7 +2,6 @@ package za.co.capitecbank.fraud_rule_engine.exception;
 
 public class DuplicateResourceException extends RuntimeException {
 
-
     public DuplicateResourceException(String message) {
         super(message);
     }

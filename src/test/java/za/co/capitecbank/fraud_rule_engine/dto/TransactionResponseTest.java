@@ -36,16 +36,16 @@ class TransactionResponseTest {
         TransactionResponse response = TransactionResponse.fromEntity(transaction);
 
         // Then
-        assertThat(response.getId()).isEqualTo(1L);
-        assertThat(response.getTransactionId()).isEqualTo("TXN-001");
-        assertThat(response.getAccountId()).isEqualTo("ACC-12345");
-        assertThat(response.getAmount()).isEqualByComparingTo(new BigDecimal("5000.00"));
-        assertThat(response.getCurrency()).isEqualTo("ZAR");
-        assertThat(response.getTransactionType()).isEqualTo("TRANSFER");
-        assertThat(response.getMerchantName()).isEqualTo("Test Merchant");
-        assertThat(response.getMerchantCategory()).isEqualTo("RETAIL");
-        assertThat(response.getTimestamp()).isEqualTo(now);
-        assertThat(response.getStatus()).isEqualTo(TransactionStatus.APPROVED);
+        assertThat(response.id()).isEqualTo(1L);
+        assertThat(response.transactionId()).isEqualTo("TXN-001");
+        assertThat(response.accountId()).isEqualTo("ACC-12345");
+        assertThat(response.amount()).isEqualByComparingTo(new BigDecimal("5000.00"));
+        assertThat(response.currency()).isEqualTo("ZAR");
+        assertThat(response.transactionType()).isEqualTo("TRANSFER");
+        assertThat(response.merchantName()).isEqualTo("Test Merchant");
+        assertThat(response.merchantCategory()).isEqualTo("RETAIL");
+        assertThat(response.timestamp()).isEqualTo(now);
+        assertThat(response.status()).isEqualTo(TransactionStatus.APPROVED);
     }
 
     @Test
@@ -67,7 +67,7 @@ class TransactionResponseTest {
         TransactionResponse response = TransactionResponse.fromEntity(transaction);
 
         // Then
-        assertThat(response.getMerchantName()).isNull();
-        assertThat(response.getMerchantCategory()).isNull();
+        assertThat(response.merchantName()).isNull();
+        assertThat(response.merchantCategory()).isNull();
     }
 }

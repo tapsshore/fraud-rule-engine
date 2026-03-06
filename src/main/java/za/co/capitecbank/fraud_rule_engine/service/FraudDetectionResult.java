@@ -1,34 +1,22 @@
 package za.co.capitecbank.fraud_rule_engine.service;
 
-import lombok.Builder;
-import lombok.Getter;
+
+
 import za.co.capitecbank.fraud_rule_engine.domain.FraudAlert;
 import za.co.capitecbank.fraud_rule_engine.domain.Transaction;
 
-
 import java.util.List;
 
-@Getter
-@Builder
-public class FraudDetectionResult {
-
-    private final Transaction transaction;
-    private final List<FraudAlert> alerts;
-    private final boolean flagged;
-
+public record FraudDetectionResult(
+        Transaction transaction,
+        List<FraudAlert> alerts,
+        boolean flagged
+) {
     public static FraudDetectionResult flagged(Transaction transaction, List<FraudAlert> alerts) {
-        return FraudDetectionResult.builder()
-                .transaction(transaction)
-                .alerts(alerts)
-                .flagged(true)
-                .build();
+        return new FraudDetectionResult(transaction, alerts, true);
     }
 
     public static FraudDetectionResult approved(Transaction transaction) {
-        return FraudDetectionResult.builder()
-                .transaction(transaction)
-                .alerts(List.of())
-                .flagged(false)
-                .build();
+        return new FraudDetectionResult(transaction, List.of(), false);
     }
 }

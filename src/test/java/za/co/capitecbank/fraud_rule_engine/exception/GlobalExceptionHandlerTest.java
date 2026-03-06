@@ -47,8 +47,8 @@ class GlobalExceptionHandlerTest {
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.NOT_FOUND);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getStatus()).isEqualTo(404);
-        assertThat(response.getBody().getMessage()).contains("TXN-001");
+        assertThat(response.getBody().status()).isEqualTo(404);
+        assertThat(response.getBody().message()).contains("TXN-001");
     }
 
     @Test
@@ -63,8 +63,8 @@ class GlobalExceptionHandlerTest {
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getStatus()).isEqualTo(409);
-        assertThat(response.getBody().getMessage()).contains("TXN-001");
+        assertThat(response.getBody().status()).isEqualTo(409);
+        assertThat(response.getBody().message()).contains("TXN-001");
     }
 
     @Test
@@ -84,8 +84,8 @@ class GlobalExceptionHandlerTest {
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getFieldErrors()).hasSize(1);
-        assertThat(response.getBody().getFieldErrors().get(0).getField()).isEqualTo("amount");
+        assertThat(response.getBody().fieldErrors()).hasSize(1);
+        assertThat(response.getBody().fieldErrors().get(0).field()).isEqualTo("amount");
     }
 
     @Test
@@ -100,7 +100,7 @@ class GlobalExceptionHandlerTest {
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getMessage()).isEqualTo("Invalid argument provided");
+        assertThat(response.getBody().message()).isEqualTo("Invalid argument provided");
     }
 
     @Test
@@ -115,7 +115,7 @@ class GlobalExceptionHandlerTest {
         // Then
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.INTERNAL_SERVER_ERROR);
         assertThat(response.getBody()).isNotNull();
-        assertThat(response.getBody().getStatus()).isEqualTo(500);
-        assertThat(response.getBody().getMessage()).contains("unexpected error");
+        assertThat(response.getBody().status()).isEqualTo(500);
+        assertThat(response.getBody().message()).contains("unexpected error");
     }
 }

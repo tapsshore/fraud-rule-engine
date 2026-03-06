@@ -15,9 +15,9 @@ class RuleResultTest {
         RuleResult result = RuleResult.of("TEST_RULE", "Test description", 75);
 
         // Then
-        assertThat(result.getRuleName()).isEqualTo("TEST_RULE");
-        assertThat(result.getDescription()).isEqualTo("Test description");
-        assertThat(result.getRiskScore()).isEqualTo(75);
+        assertThat(result.ruleName()).isEqualTo("TEST_RULE");
+        assertThat(result.description()).isEqualTo("Test description");
+        assertThat(result.riskScore()).isEqualTo(75);
     }
 
     @Test
@@ -27,7 +27,7 @@ class RuleResultTest {
         RuleResult result = RuleResult.of("TEST_RULE", "Test description", 150);
 
         // Then
-        assertThat(result.getRiskScore()).isEqualTo(100);
+        assertThat(result.riskScore()).isEqualTo(100);
     }
 
     @Test
@@ -37,7 +37,7 @@ class RuleResultTest {
         RuleResult result = RuleResult.of("TEST_RULE", "Test description", -50);
 
         // Then
-        assertThat(result.getRiskScore()).isEqualTo(0);
+        assertThat(result.riskScore()).isEqualTo(0);
     }
 
     @Test
@@ -48,7 +48,7 @@ class RuleResultTest {
         RuleResult hundredResult = RuleResult.of("RULE_HUNDRED", "Max score", 100);
 
         // Then
-        assertThat(zeroResult.getRiskScore()).isEqualTo(0);
-        assertThat(hundredResult.getRiskScore()).isEqualTo(100);
+        assertThat(zeroResult.riskScore()).isEqualTo(0);
+        assertThat(hundredResult.riskScore()).isEqualTo(100);
     }
 }

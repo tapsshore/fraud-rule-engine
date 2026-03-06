@@ -9,12 +9,20 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import za.co.capitecbank.fraud_rule_engine.dto.ApiError;
+import org.springframework.web.util.HtmlUtils;
 
 import java.util.List;
 
 @RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
+    private String sanitizePath(String path) {
+        if (path == null) {
+            return null;
+        }
+        return HtmlUtils.htmlEscape(path);
+    }
 
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<ApiError> handleResourceNotFound(
@@ -26,7 +34,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.NOT_FOUND.value(),
                 "Not Found",
                 ex.getMessage(),
-                request.getRequestURI()
+                sanitizePath(request.getRequestURI())
         );
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
@@ -42,7 +50,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.CONFLICT.value(),
                 "Conflict",
                 ex.getMessage(),
-                request.getRequestURI()
+                sanitizePath(request.getRequestURI())
         );
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
@@ -56,18 +64,17 @@ public class GlobalExceptionHandler {
 
         BindingResult bindingResult = ex.getBindingResult();
         List<ApiError.FieldError> fieldErrors = bindingResult.getFieldErrors().stream()
-                .map(error -> ApiError.FieldError.builder()
-                        .field(error.getField())
-                        .message(error.getDefaultMessage())
-                        .rejectedValue(error.getRejectedValue())
-                        .build())
+                .map(error -> new ApiError.FieldError(
+                        error.getField(),
+                        error.getDefaultMessage(),
+                        error.getRejectedValue()))
                 .toList();
 
         ApiError error = ApiError.withFieldErrors(
                 HttpStatus.BAD_REQUEST.value(),
                 "Validation Failed",
                 "One or more fields have validation errors",
-                request.getRequestURI(),
+                sanitizePath(request.getRequestURI()),
                 fieldErrors
         );
 
@@ -84,7 +91,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.BAD_REQUEST.value(),
                 "Bad Request",
                 ex.getMessage(),
-                request.getRequestURI()
+                sanitizePath(request.getRequestURI())
         );
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(error);
@@ -100,7 +107,7 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
                 "Internal Server Error",
                 "An unexpected error occurred. Please try again later.",
-                request.getRequestURI()
+                sanitizePath(request.getRequestURI())
         );
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);

@@ -55,10 +55,10 @@ class FraudDetectionResponseTest {
         FraudDetectionResponse response = FraudDetectionResponse.fromResult(result);
 
         // Then
-        assertThat(response.isFlagged()).isTrue();
-        assertThat(response.getAlerts()).hasSize(2);
-        assertThat(response.getTotalRiskScore()).isEqualTo(100); // Capped at 100
-        assertThat(response.getTransaction().getTransactionId()).isEqualTo("TXN-001");
+        assertThat(response.flagged()).isTrue();
+        assertThat(response.alerts()).hasSize(2);
+        assertThat(response.totalRiskScore()).isEqualTo(100); // Capped at 100
+        assertThat(response.transaction().transactionId()).isEqualTo("TXN-001");
     }
 
     @Test
@@ -82,9 +82,9 @@ class FraudDetectionResponseTest {
         FraudDetectionResponse response = FraudDetectionResponse.fromResult(result);
 
         // Then
-        assertThat(response.isFlagged()).isFalse();
-        assertThat(response.getAlerts()).isEmpty();
-        assertThat(response.getTotalRiskScore()).isEqualTo(0);
+        assertThat(response.flagged()).isFalse();
+        assertThat(response.alerts()).isEmpty();
+        assertThat(response.totalRiskScore()).isEqualTo(0);
     }
 
     @Test
@@ -124,6 +124,6 @@ class FraudDetectionResponseTest {
         FraudDetectionResponse response = FraudDetectionResponse.fromResult(result);
 
         // Then
-        assertThat(response.getTotalRiskScore()).isEqualTo(100); // 90 + 85 = 175, capped at 100
+        assertThat(response.totalRiskScore()).isEqualTo(100); // 90 + 85 = 175, capped at 100
     }
 }
