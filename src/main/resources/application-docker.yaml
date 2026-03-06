@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/frauddb
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+# Actuator endpoints for health checks
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Fraud rule configuration
+fraud:
+  rules:
+    high-amount:
+      threshold: 50000
+    cross-border:
+      local-currencies: ZAR
